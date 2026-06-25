@@ -71,6 +71,21 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.1; color: var(
 
 .gold { color: var(--gold); }
 
+/* ---------- Aparición al hacer scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(44px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.22, .61, .36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
 /* ---------- Botones ---------- */
 .btn {
   display: inline-flex;

@@ -54,6 +54,38 @@ const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe4tZ-xoPDItHy
     }
   }
 
+  /* ---------- Aparición al hacer scroll (reveal on scroll) ---------- */
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!prefersReduced && "IntersectionObserver" in window) {
+    const revealEls = document.querySelectorAll(
+      ".section-title, .eyebrow, .curso-text, .curso-cita, " +
+      ".dato-card, .modalidad-card, .faq-item, " +
+      ".ubicacion-text, .ubicacion-map, .registro-text, #registroBtn, .registro-alt, " +
+      ".footer-brand, .footer-contact, .footer-cta"
+    );
+
+    revealEls.forEach(function (el) { el.classList.add("reveal"); });
+
+    // Aparición escalonada (stagger) dentro de las cuadrículas
+    document.querySelectorAll(".datos-grid, .modalidades-grid, .faq-list").forEach(function (group) {
+      Array.prototype.forEach.call(group.children, function (child, i) {
+        child.style.transitionDelay = (i * 110) + "ms";
+      });
+    });
+
+    const io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+    revealEls.forEach(function (el) { io.observe(el); });
+  }
+
   /* ---------- Acordeón FAQ: cierra los demás al abrir uno ---------- */
   const faqItems = document.querySelectorAll(".faq-item");
   faqItems.forEach(function (item) {
