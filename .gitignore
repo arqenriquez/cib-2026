@@ -1,0 +1,11 @@
+# Configuración local del agente / editor
+.claude/
+
+# Archivos del sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Temporales
+*.log
+*.tmp
