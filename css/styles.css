@@ -543,8 +543,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.1; color: var(
   .footer-contact a { justify-content: center; }
 }
 
-@media (max-width: 680px) {
-  /* Nav móvil */
+/* Nav móvil: el menú desplegable se activa cuando los enlaces empiezan a encimarse */
+@media (max-width: 830px) {
   .nav-toggle { display: flex; }
   .nav {
     position: fixed;
@@ -564,7 +564,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.1; color: var(
   .nav.open { transform: translateX(0); }
   .nav a { width: 100%; padding: 14px 6px; border-bottom: 1px solid rgba(255,255,255,.08); }
   .nav .nav-cta { margin-top: 14px; text-align: center; }
+}
 
+@media (max-width: 680px) {
   .section { padding: 56px 0; }
   .hero { min-height: auto; padding: 70px 0; }
   .curso-cita blockquote { font-size: 1.35rem; }
