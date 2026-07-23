@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- Abrir siempre en el Hero: si el enlace llega con un #ancla heredado
+       (p. ej. #registro porque antes se tocó "Pre-regístrate" y ese enlace se
+       recargó o compartió), lo quitamos ANTES de renderizar para que el
+       navegador no salte a esa sección al cargar. La navegación interna con
+       clics sigue funcionando con normalidad. -->
+  <script>
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  </script>
+
   <title>CIB 2026 · Curso de Iniciación Bíblica | ABP Hermosillo</title>
   <meta name="description" content="Curso de Iniciación Bíblica 2026 (CIB) impartido por la Animación Bíblica de la Pastoral de la Arquidiócesis de Hermosillo. Del 3 al 21 de agosto, de lunes a viernes, 7 a 9 pm. Modalidad presencial y en línea." />
 
