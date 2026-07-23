@@ -515,14 +515,17 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.1; color: var(
    =================================================================== */
 .wa-float {
   position: fixed;
-  bottom: 22px; right: 22px;
+  /* Respeta la barra inferior del navegador / indicador de inicio de iOS
+     (requiere viewport-fit=cover en la meta viewport para que env() no sea 0). */
+  right: calc(22px + env(safe-area-inset-right, 0px));
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
   width: 56px; height: 56px;
   background: #25D366;
   color: var(--white);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 8px 24px rgba(37,211,102,.45);
-  z-index: 90;
+  z-index: 95;
   transition: transform .2s;
 }
 .wa-float:hover { transform: scale(1.08); }

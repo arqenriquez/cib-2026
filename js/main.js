@@ -15,6 +15,13 @@ const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe4tZ-xoPDItHy
 (function () {
   "use strict";
 
+  /* ---------- Abrir siempre desde arriba ----------
+     Evita que el navegador restaure una posición de scroll previa y haga que
+     la página abra desplazada hacia abajo (respeta anclas #seccion si las hay). */
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
   /* ---------- Menú móvil ---------- */
   const toggle = document.getElementById("navToggle");
   const menu = document.getElementById("navMenu");
@@ -84,6 +91,38 @@ const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe4tZ-xoPDItHy
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
 
     revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- Carga diferida del mapa ----------
+     El iframe de Google Maps se inserta solo cuando la sección de ubicación
+     se acerca al viewport. Así no está presente para robar el foco al cargar
+     la página, que era lo que hacía que en móviles abriera desplazada hacia
+     abajo (loading="lazy" no es fiable en iOS Safari). */
+  const mapEmbed = document.querySelector(".map-embed[data-src]");
+  if (mapEmbed) {
+    const loadMap = function () {
+      if (mapEmbed.dataset.src) {
+        mapEmbed.src = mapEmbed.dataset.src;
+        mapEmbed.removeAttribute("data-src");
+      }
+    };
+
+    if ("IntersectionObserver" in window) {
+      const mapIO = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            loadMap();
+            obs.disconnect();
+          }
+        });
+      }, { rootMargin: "200px 0px" });
+      mapIO.observe(mapEmbed);
+    } else {
+      // Respaldo para navegadores sin IntersectionObserver: carga tras el
+      // primer scroll (o pasado un tiempo) para no interferir con el arranque.
+      window.addEventListener("scroll", loadMap, { once: true, passive: true });
+      setTimeout(loadMap, 3000);
+    }
   }
 
   /* ---------- Acordeón FAQ: cierra los demás al abrir uno ---------- */
