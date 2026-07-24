@@ -42,15 +42,17 @@ const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe4tZ-xoPDItHy
     });
   }
 
-  /* ---------- Botón de registro -> Google Form ---------- */
-  const registroBtn = document.getElementById("registroBtn");
+  /* ---------- Botones que llevan al Google Form ---------- */
+  // Todos los enlaces con la clase .js-form-link (CTA del navbar y botón de la
+  // sección de registro) apuntan al mismo formulario, definido una sola vez arriba.
+  const formButtons = document.querySelectorAll(".js-form-link");
 
-  if (registroBtn) {
+  formButtons.forEach(function (btn) {
     if (GOOGLE_FORM_URL && GOOGLE_FORM_URL !== "#") {
-      registroBtn.setAttribute("href", GOOGLE_FORM_URL);
+      btn.setAttribute("href", GOOGLE_FORM_URL);
     } else {
       // Aún no se ha configurado el form: evita ir a una página vacía.
-      registroBtn.addEventListener("click", function (e) {
+      btn.addEventListener("click", function (e) {
         e.preventDefault();
         alert(
           "El formulario de registro se está preparando.\n\n" +
@@ -59,7 +61,7 @@ const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe4tZ-xoPDItHy
         );
       });
     }
-  }
+  });
 
   /* ---------- Aparición al hacer scroll (reveal on scroll) ---------- */
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
